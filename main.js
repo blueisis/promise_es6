@@ -1,25 +1,32 @@
- function test(){
-   setTimeout(function(){
-     console.log("타이머 끝");
-   }, 1000);
-
-   for(let i=0; i<4; i++){
-     console.log(i);
-   }
-
-   console.log("for문 끝");
+function test(delay, callback){
+  setTimeout(function(){
+    callback();
+  },delay);
 }
 
-test();
-console.log("메인끝");
+test(1000, function(){
+  console.log("callback1");
+})
 
 /*
-실제 자바스크립트엔진에서의 실행흐름
-1.callstack에서 먼저 test()함수 호출
-2.test()함수 안쪽의 setTimeout을 wep_api에게 전달하고 바로 다음 업무 실행
-3.바로 그 다음 for문실행
-4.for문이 완료되면 console.log("for문 끝 실행")
-5.test함수 안쪽의 코드를 모두 실행한 뒤 마지막으로 "메인끝"실행
-6.web api가 setTimeout을 실행하고 다시 안쪽의 "타이머끝을" callabck queue에 전달
-7.최종적으로 "타이머 끝"이 제일 마지막에 callstack에 전달되서 실행
-*/
+1. "start" 실행 -js
+2. 첫번째 test()실행 -js
+3. test 함수 안쪽의 setTimeout -web api 전달
+4. 두번째 test()실행 -js
+5. test 함수 안쪽의 setTimeout -web api 전달
+6. 세번째 test()실행 -js
+7. test 함수 안쪽의 setTimeout -web api 전달
+8. console.log("end")실행 -js
+9. 1초 뒤에 setTimeout 실행하고 "callback1" -callstak에 전달 -web
+10. 1초 뒤에 setTimeout 실행하고 "callback2" -callstak에 전달 -web
+11. 1초 뒤에 setTimeout 실행하고 "callback3" -callstak에 전달 -web
+
+출력
+
+start
+end
+callback1
+callback2
+callback3
+
+*/ 
